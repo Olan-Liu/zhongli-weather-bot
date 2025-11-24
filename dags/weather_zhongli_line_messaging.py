@@ -44,8 +44,7 @@ def fetch_weather_and_push(**context):
         e = 6.105 * 10**(7.5*temp/(237.7+temp)) * (hum/100)
         feels_like = round(temp + 0.33*e - 4, 1)
 
-    # === 使用 Neon 雲端資料庫（關鍵改這裡）===
-    # 這裡用你剛剛設的 Connection ID
+    # === 使用 Neon 雲端資料庫===
     hook = PostgresHook(postgres_conn_id='neon_postgres')
     conn = hook.get_conn()
     cur = conn.cursor()
@@ -63,7 +62,7 @@ def fetch_weather_and_push(**context):
     conn.commit()
     conn.close()
 
-    # LINE 推播（保持原樣）
+    # LINE 推播
     token = Variable.get("LINE_CHANNEL_TOKEN")
     user_id = Variable.get("LINE_USER_ID")
     line_url = "https://api.line.me/v2/bot/message/push"
